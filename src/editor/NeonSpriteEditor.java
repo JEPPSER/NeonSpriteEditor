@@ -21,6 +21,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.ScrollEvent;
@@ -48,6 +49,8 @@ public class NeonSpriteEditor extends Application {
 	private float prevY = 0;
 	private float offsetX = 10;
 	private float offsetY = 10;
+	
+	private Image backgroundImage;
 
 	private boolean isCtrlDown = false;
 
@@ -87,15 +90,21 @@ public class NeonSpriteEditor extends Application {
 		Button moveUp = new Button("Move Up");
 		Button moveDown = new Button("Move Down");
 		Button exportBtn = new Button("Export");
+		Button importBackgroundBtn = new Button("Import Background");
 		FileChooser fc = new FileChooser();
 		menu.getChildren().addAll(widthText, widthTextField, heightText, heightTextField, gridText, gridTextField,
-				newSpriteBtn, loadBtn, saveBtn, moveLeft, moveRight, moveUp, moveDown, exportBtn);
+				newSpriteBtn, loadBtn, saveBtn, moveLeft, moveRight, moveUp, moveDown, exportBtn, importBackgroundBtn);
 		canvas = new Canvas();
 		g = canvas.getGraphicsContext2D();
 		canvas.setWidth(500);
 		canvas.setHeight(900);
 		root.getChildren().addAll(menu, canvas);
 		draw();
+		
+		importBackgroundBtn.setOnAction(e -> {
+			File f = fc.showOpenDialog(primaryStage);
+			this.backgroundImage = new Image("file:" + f.getAbsolutePath());
+		});
 		
 		exportBtn.setOnAction(e -> {
 			BufferedImage bi = new BufferedImage((int) width, (int) height, BufferedImage.TYPE_INT_ARGB);
@@ -308,6 +317,8 @@ public class NeonSpriteEditor extends Application {
 		g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		g.scale(scale, scale);
 		g.setLineWidth(2 / scale);
+		
+		g.drawImage(backgroundImage, offsetX, offsetY);
 
 		g.setFill(Color.GRAY);
 		int gridWidth = (int) ((float) width / (float) gridSize) + 1;

@@ -79,7 +79,7 @@ public class NSpriteToPng {
 		float u = (float) (Math.PI / 2) + v;
 		float x = (float) Math.cos(u) * h;
 		float y = (float) Math.sin(u) * h;
-		for (int i = -5; i < 2; i++) {
+		for (int i = -1; i < 2; i++) {
 			int fromX = Math.round(from.getX() + i * x);
 			int fromY = Math.round(from.getY() + i * y);
 			int toX = Math.round(to.getX() + i * x);
